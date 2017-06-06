@@ -10,16 +10,16 @@ json = open('https://tidesandcurrents.noaa.gov/mdapi/latest/webapi/geogroups/139
 
 doc = JSON.parse json.read
 
-csv = CSV.open('stations.csv', 'w')
-csv << field_names
-
-doc['stationList'].each do |stn|
+out_json = doc['stationList'].map do |stn|
   next if stn['stationId'].nil?
 
-  csv << field_names.map do |fn|
+  print '.'
+
+  field_names.map do |fn|
     stn[fn]
   end
-  print '.'
-end
+end.compact
+
+File.open('stations.json', 'w'){ |f| f.write JSON.generate out_json }
 
 puts

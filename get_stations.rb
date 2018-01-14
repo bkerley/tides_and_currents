@@ -15,9 +15,7 @@ out_json = doc['stationList'].map do |stn|
 
   print '.'
 
-  field_names.map do |fn|
-    stn[fn]
-  end
+  stn.slice(*field_names).values
 end.compact
 
 File.open('stations.json', 'w'){ |f| f.write JSON.generate out_json }
